@@ -2,7 +2,7 @@
   "name": "todo-api",
   "version": "1.0.0",
   "description": "Create rest api using mongodb",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "mocha server/**/*.test.js",
     "test-watch": "nodemon --exec npm test"
