@@ -5,10 +5,12 @@ const {app} = require("./../server");
 const {Todo} = require("./../models/Todo");
 
 beforeEach((done)=>{
-  Todo.remove({}).then(()=> done());
+  Todo.remove({}).then(()=> {
+    done()
+  });
 });
 
-describe("POST /todos", ()=>{
+describe("POST /todos => CREATE NEW TODO", ()=>{
   it("It should create a new todo", (done) =>{
     var text = "Testing..";
 
@@ -30,4 +32,22 @@ describe("POST /todos", ()=>{
         }).catch((e)=> done(e));
       });
   });
-})
+
+  describe("POST /todos=>invalid data", ()=>{
+    it("Should not create any data with invalid body data", (done)=>{
+      request(app)
+      .post("/todo")
+      .send({})
+      .expect(400)
+      .end((err, res)=>{
+        if(err){
+          return done(err);
+        }
+        Todo.find({}).then((todos)=>{
+          expect(todos.length).toBe(0)
+          done();
+        });
+      });
+    });
+  });
+});
