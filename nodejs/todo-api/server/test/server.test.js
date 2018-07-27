@@ -2,7 +2,11 @@ const expect = require("expect");
 const request = require("supertest");
 
 const {app} = require("./../server");
-const {Todo} = require("./../models/todo");
+const {Todo} = require("./../models/Todo");
+
+beforeEach((done)=>{
+  Todo.remove({}).then(()=> done());
+});
 
 describe("POST /todos", ()=>{
   it("It should create a new todo", (done) =>{
@@ -10,7 +14,7 @@ describe("POST /todos", ()=>{
 
     request(app)
       .post("/todo")
-      .send({text});
+      .send({text})
       .expect(200)
       .expect((res) =>{
           expect(res.body.text).toBe(text);
@@ -20,8 +24,8 @@ describe("POST /todos", ()=>{
           return done(err);
         }
         Todo.find().then((todos)=>{
-          expect(todo.length).toBe(1);
-          expect(todo[0].text).toBe(text);
+          expect(todos.length).toBe(1);
+          expect(todos[0].text).toBe(text);
           done();
         }).catch((e)=> done(e));
       });
