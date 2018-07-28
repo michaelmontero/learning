@@ -57,9 +57,19 @@ app.post("/user", (req, res)=>{
   user.save().then(()=>{
     return user.generateAuthToken();
   }).then((token)=>{
-      res.send(user);
+      res.header("x-auth". token).send(user);
   }).catch((err)=>{
     res.status(400).send(err);
+  });
+});
+
+app.get("/user/me",(req, res)=>{
+  var token = req.header("x-header");
+  User.findByToken(token).then((user)=>{
+      if(!user){
+
+      }
+    res.send(user);
   });
 });
 
