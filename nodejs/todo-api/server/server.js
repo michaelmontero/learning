@@ -1,5 +1,13 @@
-var {mongose} = require("./db/mongoose");
+var env = process.env.NODE_ENV || "development";
+console.log("**********",env);
+if(env == "development"){
+  process.env.MONGODB_URI = "mongodb://localhost:27017/Todo";
+}else if(env ==="test"){
+  process.env.MONGODB_URI = "mongodb://localhost:27017/TodoTest";
+}
 
+var {mongose} = require("./db/mongoose");
+var {ObjectId} = require("mongodb");
 var { Todo } = require("./models/Todo");
 var { User } = require("./models/User");
 
@@ -16,7 +24,21 @@ app.get("/todos", (req, res)=>{
   }, (err)=>{
     res.status(400).send({err})
   });
-})
+});
+
+app.get("/todo/:id", (req, res)=>{
+  var id = req.params.id;
+  if(ObjectId.isValid(id)){
+    Todo.findById(id).then((todo)=>{
+      if(!todo){
+        res.send([])
+      }
+      res.send(todo);
+    });
+  }else{
+    res.status(422).send([]);
+  }
+});
 
 app.post("/todo", (req, res)=>{
   var todo = new Todo({

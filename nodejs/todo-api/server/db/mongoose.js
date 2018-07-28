@@ -1,9 +1,9 @@
 var mongoose = require("mongoose");
 
-const url = "mongodb://localhost:27017";
 const dataBaseName = "Todo";
+const url = process.env.MONGODB_URI;
 
 mongoose.Promise = global.Promise;
-mongoose.connect(`${url}/${dataBaseName}`,{ useNewUrlParser: true });
+mongoose.connect(url,{ useNewUrlParser: true });
 
 module.exports = { mongoose };
