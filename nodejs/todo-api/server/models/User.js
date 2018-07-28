@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const jwt = require("jsonwebtoken");
 const _ = require("lodash");
-const secret = "some secret";
+const secret = "some_secret";
 
 var UserSchema = new mongoose.Schema({
   email :  {
@@ -13,7 +13,7 @@ var UserSchema = new mongoose.Schema({
     unique : true,
     validate :{
       validator : validator.isEmail,
-      message : `{VALUE } is not a valid email`
+      message : `{VALUE} is not a valid email`
     }
   },
   password :{
@@ -21,24 +21,25 @@ var UserSchema = new mongoose.Schema({
     required : true,
     minLength : 6
   },
-  token : [{
-    access :{
-      type : String,
-      require : true
-    },
-    token : {
-      type : String,
-      require : true
-    }
-  }]  
+   tokens : [{
+     "access" : {
+        type : String,
+        require : true
+      },
+      "token" : {
+        type : String,
+        require : true
+      }
+    }]
 });
 
-UserSchema.static.findByToken = function(token){
-  var user = this;
+UserSchema.statics.findByToken = function(token){
   var decoded;
   try{
     decoded = jwt.verify(token, secret);
-  }catch(e){ }
+  }catch(e){ 
+    return Promise.reject(e);
+  }
   return User.findOne({ 
       _id : decoded._id,
       'tokens.token' : token,
@@ -57,7 +58,7 @@ UserSchema.methods.generateAuthToken = function(){
   var access = "auth";
   var token = jwt.sign({ _id : user._id.toHexString(), access},secret).toString();
 
-  user.token = user.token.concat([{access,token}]);
+  user.tokens = user.tokens.concat([{access,token}]);
   return user.save().then(()=>{
     return token;
   });
