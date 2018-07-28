@@ -8,7 +8,7 @@ var {mongose} = require("./db/mongoose");
 var {ObjectId} = require("mongodb");
 var { Todo } = require("./models/Todo");
 var { User } = require("./models/User");
-
+var {authenticate} = require("./middleware/authenticate");
 
 
 const port = process.env.PORT || 7979;
@@ -63,16 +63,10 @@ app.post("/user", (req, res)=>{
   });
 });
 
-app.get("/user/me",(req, res)=>{
-  var token = req.header("x-auth");
-  User.findByToken(token).then((user)=>{
-      if(!user){
-          return Promise.reject("Invalid user token");
-      }
-    res.send(user);
-  }).catch((e)=>{
-    res.status(400).send(e)
-  });
+
+
+app.get("/user/me", authenticate, (req, res)=>{
+    res.send(req.user);
 });
 
 app.listen(port, ()=>{
