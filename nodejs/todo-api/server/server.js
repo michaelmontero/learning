@@ -1,15 +1,9 @@
-var env = process.env.NODE_ENV || "development";
-console.log("**********",env);
-if(env == "development"){
-  process.env.MONGODB_URI = "mongodb://localhost:27017/Todo";
-}else if(env ==="test"){
-  process.env.MONGODB_URI = "mongodb://localhost:27017/TodoTest";
-}
-
+require("./config/config.js");
 var {mongose} = require("./db/mongoose");
 var {ObjectId} = require("mongodb");
 var { Todo } = require("./models/Todo");
 var { User } = require("./models/User");
+
 
 const express = require("express");
 const bodyParser = require("body-parser");
