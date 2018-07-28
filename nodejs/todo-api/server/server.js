@@ -3,6 +3,7 @@ require("./config/config.js");
 const express = require("express");
 const bodyParser = require("body-parser");
 const _ = require("lodash");
+const jwt = require("jsonwebtoken");
 var {mongose} = require("./db/mongoose");
 var {ObjectId} = require("mongodb");
 var { Todo } = require("./models/Todo");
@@ -52,10 +53,11 @@ app.post("/todo", (req, res)=>{
 
 app.post("/user", (req, res)=>{
   var body = _.pick(req.body, ["email", "password"])
-  console.log("body", body);
   var user = new User(body);
-  user.save().then((user)=>{
-    res.send(user);
+  user.save().then(()=>{
+    return user.generateAuthToken();
+  }).then((token)=>{
+      res.send(user);
   }).catch((err)=>{
     res.status(400).send(err);
   });
