@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const _ = require("lodash");
 const bcrypt = require("bcryptjs");
 
-const secret = "some_secret";
+const secret = process.env.JWT_SECRET;
 
 var UserSchema = new mongoose.Schema({
   email :  {
@@ -70,7 +70,7 @@ UserSchema.methods.toJSON = function(){
   return _.pick(userObj, ["_id","email"]);
 };
 
-UserSchema.methods.generateAuthToken = function(){
+UserSchema.methods.generateAuthToken = async function(){
   var user = this;
   var access = "auth";
   var token = jwt.sign({ _id : user._id.toHexString(), access},secret).toString();
