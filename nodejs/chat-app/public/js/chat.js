@@ -10,7 +10,7 @@
     });
 
     socket.emit("createMessage", {
-        "to" : "monterom334@gmail.com",
+        "from" : "monterom334@gmail.com",
         "text" : "Some message",
         "subject" : "Learning"
     });

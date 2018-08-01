@@ -13,22 +13,20 @@ var io = socketIO(server);
 app.use(express.static(partialPath));
 
 io.on("connection", (socket)=>{
-    socket.emit("newEmail", {
-        "from" : "monterom334@gmail.com",
-        "text" : "Some message",
-        "subject" : "Learning"
+
+    socket.emit("newMessage", {
+        from : "Admin",
+        text : "Welcome to the chat app"
     });
 
-    socket.on("createMessage",(message)=>{
-        console.log("New message is comming", JSON.stringify(message, undefined, 2));
+    socket.broadcast.emit("newMessage", {
+        from : "Admin",
+        text : "New user has joined",
+        "createdAt" : new Date().getTime()
     });
-
-    socket.on("newMessage",(message)=>{
-        console.log(JSON.stringify(message, undefined, 2));
-    });
-
-    io.on("disconnect",(socket)=>{
-        console.log("Disconected");
+    
+    socket.on("disconnect",()=>{
+        console.log("User disconected");
     });
 });
 
