@@ -13,9 +13,12 @@
         "from" : "monterom334@gmail.com",
         "text" : "Some message",
         "subject" : "Learning"
+    },function(data){
+        console.log(data);
     });
 
     socket.on("disconnect", function(){
         console.log("Disconected from server.");
     });
+
 }());

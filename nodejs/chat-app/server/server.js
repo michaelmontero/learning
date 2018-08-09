@@ -3,14 +3,13 @@ const http = require("http");
 const socketIO = require("socket.io");
 const path = require("path");
 
-const {generateMessage} = require("./util/message");
-
 const port = process.env.PORT || 3000;
 const partialPath = path.join(__dirname,'../public');
 const app = express();
-
 const server = http.createServer(app);
-var io = socketIO(server);
+const io = socketIO(server);
+
+const {generateMessage} = require("./util/message");
 
 app.use(express.static(partialPath));
 
@@ -20,13 +19,13 @@ io.on("connection", (socket)=>{
 
     socket.broadcast.emit("newMessage", generateMessage("Admin","New user has joined"));
     
-    socket.on("createMessage",(message)=>{
-        console.log("createMessage", message);
+    socket.on("createMessage",(message, callback)=>{
         io.emit("newMessage", generateMessage(message.from, message.text));
+        callback("Some message from server");
     });
 
     socket.on("disconnect",()=>{
-        console.log("User disconected");
+        socket.broadcast.emit("newMessage", generateMessage("Admin","User has left"));
     });
 });
 

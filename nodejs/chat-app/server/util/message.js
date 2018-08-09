@@ -2,7 +2,7 @@ var generateMessage = (from, text) =>{
     return {
         from,
         text,
-        createAt : new Date().getDate()
+        createAt : new Date().getTime()
     }
 };
 
