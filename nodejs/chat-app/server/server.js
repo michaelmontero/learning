@@ -9,7 +9,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
-const {generateMessage} = require("./util/message");
+const {generateMessage, generateLocationMessage} = require("./util/message");
 
 app.use(express.static(partialPath));
 
@@ -17,12 +17,17 @@ io.on("connection", (socket)=>{
 
     socket.emit("newMessage", generateMessage("Admin","Welcome to the chat app"));
 
+    //Welcome message
     socket.broadcast.emit("newMessage", generateMessage("Admin","New user has joined"));
     
     socket.on("createMessage",(message, callback)=>{
         message = generateMessage(message.from, message.text);
         io.emit("newMessage", message);
         callback(message);
+    });
+
+    socket.on("createLocationMessage", (coords)=>{
+        io.emit("newLocation",generateLocationMessage("Admin",coords));
     });
 
     socket.on("disconnect",()=>{
