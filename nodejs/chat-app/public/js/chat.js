@@ -6,16 +6,21 @@
     });
 
     socket.on("newMessage", function(data){
-        console.log("New message", JSON.stringify(data, undefined, 2));
+            var list = jQuery("<li></li>");
+            list.text(`${data.from}: ${data.text}`);
+            jQuery("#message-list").append(list);
     });
 
-    socket.emit("createMessage", {
-        "from" : "monterom334@gmail.com",
-        "text" : "Some message",
-        "subject" : "Learning"
-    },function(data){
-        console.log(data);
-    });
+    jQuery("#button-send").click(function(e){
+        e.preventDefault();
+        socket.emit("createMessage", {
+            "from" : "User 1",
+            "text" : jQuery("#message-text").val()
+        },function(data){
+            console.log(`From server ${data}`);
+        });
+    })
+    
 
     socket.on("disconnect", function(){
         console.log("Disconected from server.");
