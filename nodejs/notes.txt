@@ -1,0 +1,3 @@
+-NodeJS code (v8 engine) is written in c++
+-The V8 engine convert hight level NodeJS code in the proper Machine code.
+-
