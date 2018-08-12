@@ -11,3 +11,5 @@ as parameter.
 The first time a module is required node cached that module, so if the module
 is required again in other file the engine return the object  cached before.
 
+#EVENT
+An event is when the app respond to something that happens.
