@@ -1,4 +1,13 @@
 -NodeJS code (v8 engine) is written in c++
 -The V8 engine convert hight level NodeJS code in the proper Machine code.
 -A module is self-contained reusable block of code. It means the code you have in a module does not affect without intention other code.
--
+
+#REQUIRE
+require is a function that receive a path as argument and it returns
+module.exports. All that works because all code written in NodeJS
+is wrapped by a function expression that receive (exports, require, module, __filename, __dirname)
+as parameter.
+
+The first time a module is required node cached that module, so if the module
+is required again in other file the engine return the object  cached before.
+

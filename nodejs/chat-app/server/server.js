@@ -4,13 +4,13 @@ const socketIO = require("socket.io");
 const path = require("path");
 
 const port = process.env.PORT || 3000;
-const partialPath = path.join(__dirname,'../public');
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
 const {generateMessage, generateLocationMessage} = require("./util/message");
 
+const partialPath = path.join(__dirname,'../public');
 app.use(express.static(partialPath));
 
 io.on("connection", (socket)=>{
