@@ -1,3 +1,4 @@
 -NodeJS code (v8 engine) is written in c++
 -The V8 engine convert hight level NodeJS code in the proper Machine code.
+-A module is self-contained reusable block of code. It means the code you have in a module does not affect without intention other code.
 -
