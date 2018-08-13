@@ -6,22 +6,17 @@
     });
 
     socket.on("newMessage", function(data){
-        var formattedTime = moment(data.createAt).format("h:mm a");
-        
-        var list = $("<li></li>");
-        list.text(`${data.from} ${formattedTime}: ${data.text} `);
-        console.log(data)
-        $("#messages").append(list);
+        data.createAt = moment(data.createAt).format("h:mm a");
+        var template = $("#message-template").html();
+        var html = Mustache.render(template, data);
+        $("#messages").append(html);
     });
 
     socket.on("newLocation", function(data){
-        var list = $("<li></li>");
-        var formattedTime = moment(data.createAt).format("h:mm a");
-        var a = $(`<a target="_blank">My current location</a>`);
-        list.text(`${data.from}: ${formattedTime}`);
-        a.attr("href", data.url);
-        list.append(a);
-        $("#messages").append(list);
+        data.createAt = moment(data.createAt).format("h:mm a");
+        var template = $("#location-template").html();
+        var html = Mustache.render(template, data);
+        $("#messages").append(html);
     });
 
     $("#button-send").click(function(e){
