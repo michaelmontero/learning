@@ -6,27 +6,28 @@
     });
 
     socket.on("newMessage", function(data){
-        var list = jQuery("<li></li>");
+        var list = $("<li></li>");
         list.text(`${data.from}: ${data.text}`);
-        jQuery("#message-list").append(list);
+        $("#messages").append(list);
     });
 
     socket.on("newLocation", function(data){
-        var list = jQuery("<li></li>");
-        var a = jQuery(`<a target="_blank">My current location</a>`);
+        var list = $("<li></li>");
+        var a = $(`<a target="_blank">My current location</a>`);
         list.text(`${data.from}: `);
         a.attr("href", data.url);
         list.append(a);
-        jQuery("#message-list").append(list);
+        $("#messages").append(list);
     });
 
-    jQuery("#button-send").click(function(e){
+    $("#button-send").click(function(e){
         e.preventDefault();
+        var messageText = $("#message-text");
         socket.emit("createMessage", {
             "from" : "User 1",
-            "text" : jQuery("#message-text").val()
+            "text" : messageText.val()
         },function(data){
-            console.log(`From server ${data}`);
+            messageText.val("");
         });
     });    
 
@@ -34,17 +35,20 @@
         console.log("Disconected from server.");
     });
 
-    var locationButton = jQuery("#send-location");
-    locationButton.click(()=>{
+    var locationButton = $("#send-location");
+    locationButton.click(()=>{        
         if(!navigator.geolocation){
             return alert("Novigation is not supported in you browser");
         }
+        locationButton.prop("disabled", "disabled").text("Sending location...");
         navigator.geolocation.getCurrentPosition((position)=>{            
             socket.emit("createLocationMessage", {
                 latitude : position.coords.latitude,
                 longitude : position.coords.longitude
             });
+            locationButton.removeAttr("disabled").text("Send location");
         }, (err)=>{
+            locationButton.removeAttr("disabled").text("Send location");
             alert("Enable to fetch location");
         });
     });
