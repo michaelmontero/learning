@@ -6,15 +6,19 @@
     });
 
     socket.on("newMessage", function(data){
+        var formattedTime = moment(data.createAt).format("h:mm a");
+        
         var list = $("<li></li>");
-        list.text(`${data.from}: ${data.text}`);
+        list.text(`${data.from} ${formattedTime}: ${data.text} `);
+        console.log(data)
         $("#messages").append(list);
     });
 
     socket.on("newLocation", function(data){
         var list = $("<li></li>");
+        var formattedTime = moment(data.createAt).format("h:mm a");
         var a = $(`<a target="_blank">My current location</a>`);
-        list.text(`${data.from}: `);
+        list.text(`${data.from}: ${formattedTime}`);
         a.attr("href", data.url);
         list.append(a);
         $("#messages").append(list);
