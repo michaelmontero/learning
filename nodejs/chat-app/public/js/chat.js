@@ -6,9 +6,9 @@
     });
 
     socket.on("newMessage", function(data){
-            var list = jQuery("<li></li>");
-            list.text(`${data.from}: ${data.text}`);
-            jQuery("#message-list").append(list);
+        var list = jQuery("<li></li>");
+        list.text(`${data.from}: ${data.text}`);
+        jQuery("#message-list").append(list);
     });
 
     socket.on("newLocation", function(data){
@@ -48,5 +48,4 @@
             alert("Enable to fetch location");
         });
     });
-
 }());

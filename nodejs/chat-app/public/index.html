@@ -5,20 +5,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Socket.io chat</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/chat.css" ></link>
 </head>
-<body>
-    <p>Welcome to the chat</p>
+<body class="chat">
+    
+    <div class="chat__sidebar">
+        <h3>Contacts</h3>
+        <div id="users"></div>
+    </div>
 
-    <ol id="message-list">
-        
-    </ol>
-
-    <form id="chat-form">
-        <input type="text" required id="message-text" placeholder="Message"/>
-        <button type="submit" id="button-send">Send</button>
-    </form>
-
-    <button id="send-location">Send location</button>
+    <div class="chat__main">
+        <ol id="messages" class="chat__messages"></ol>
+        <div class="chat__footer">
+            <form id="message-form">
+                <input type="text" name="message" required id="message-text" placeholder="Message"/>
+                <button type="submit" id="button-send">Send</button>
+            </form>    
+            <button id="send-location">Send location</button>            
+        </div>        
+    </div>     
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/libs/jquery.js"></script>
