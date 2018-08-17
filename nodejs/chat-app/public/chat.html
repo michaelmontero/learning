@@ -1,0 +1,63 @@
+<!DOCTYPE <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Socket.io chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/chat.css" ></link>
+</head>
+<body class="chat">
+    
+    <div class="chat__sidebar">
+        <h3>Contacts</h3>
+        <div id="users"></div>
+    </div>
+
+    <div class="chat__main">
+        <!--Message list-->
+        <ol id="messages" class="chat__messages"></ol>
+        
+        <div class="chat__footer">
+            <!--Message list-->
+            <form id="message-form">
+                <input type="text" name="message" required id="message-text" autofocus autocomplete="off" placeholder="Message"/>
+                <button type="submit" id="button-send">Send</button>
+            </form>    
+            <button id="send-location">Send location</button>            
+        </div>        
+    </div>     
+
+    <script id="message-template" type="text/template">
+        <li class="message">
+            <div class="message__title">
+                <h4>{{from}}</h4>
+                <span>{{createAt}}</span>
+            </div>
+            <div class="message__body">
+                {{text}}
+            </div>
+        </li>
+    </script>
+
+    <script id="location-template" type="text/template">
+        <li class="message">
+            <div class="message__title">
+                <h4>{{from}}</h4>
+                <span>{{createAt}}</span>
+            </div>
+            <div class="message__body">
+                <p>
+                    <a href="{{url}}" target="_blank">My current location</a>
+                </p>
+            </div>
+        </li>
+    </script>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/libs/jquery.js"></script>
+    <script src="/js/libs/moment.min.js"></script>
+    <script src="/js/libs/mustache.js"></script>
+    <script src="/js/chat.js"></script>
+</body>
+</html>
