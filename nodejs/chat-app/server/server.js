@@ -9,21 +9,28 @@ const server = http.createServer(app);
 const io = socketIO(server);
 
 const {generateMessage, generateLocationMessage} = require("./util/message");
+const {validString} = require("./util/validation");
 
 const partialPath = path.join(__dirname,'../public');
 app.use(express.static(partialPath));
 
 io.on("connection", (socket)=>{
 
-    socket.emit("newMessage", generateMessage("Admin","Welcome to the chat app"));
-
-    //Welcome message
-    socket.broadcast.emit("newMessage", generateMessage("Admin","New user has joined"));
-    
     socket.on("createMessage",(message, callback)=>{
         message = generateMessage(message.from, message.text);
         io.emit("newMessage", message);
         callback(0);
+    });
+
+    socket.on("join", (params, callback)=>{
+        if(!validString(params.name) || !validString(params.room)){
+            callback("Name and room name are required");
+        }
+         socket.emit("newMessage", generateMessage("Admin","Welcome to the chat app"));
+
+        socket.broadcast.to(params.room).emit("newMessage", generateMessage("Admin",`User ${params.name} has joined`));
+        socket.join(params.room);
+        callback();
     });
 
     socket.on("createLocationMessage", (coords)=>{

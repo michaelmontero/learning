@@ -1,4 +1,4 @@
-var Emitter = require("./emiter");
+var Emitter = require("events");
 
 var emitter = new Emitter();
 emitter.on("save", ()=>{
