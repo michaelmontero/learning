@@ -1,3 +1,6 @@
+There is differences between JSON and Javascript objects literal and is that the json keys should be only string and the data
+can't not be a function. The object literal key could be any valid javascript expression (Including function, null, undefined) and the value could be anything.
+
 -NodeJS code (v8 engine) is written in c++
 -The V8 engine convert hight level NodeJS code in the proper Machine code.
 -A module is self-contained reusable block of code. It means the code you have in a module does not affect without intention other code.
